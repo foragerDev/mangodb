@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24.2)
+cmake_minimum_required(VERSION 3.22.1)
 set(CXX_STANDARD_REQUIRED 20)
 
 set(MANGODB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/mangodb)

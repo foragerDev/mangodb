@@ -9,5 +9,6 @@
         "functional": "cpp",
         "variant": "cpp",
         "iostream": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/root/mangodb"
 }
