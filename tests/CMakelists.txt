@@ -1,0 +1,15 @@
+include_directories(${PROJECT_SOURCE_DIR}/include/mangodb)
+
+enable_testing()
+
+add_executable(
+  mangodb_tests
+  test_database.cpp
+)
+target_link_libraries(
+  mangodb_tests
+  GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(mangodb_tests)
