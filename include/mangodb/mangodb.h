@@ -12,9 +12,8 @@ namespace mangodb
     class MangoDB
     {
     private:
-    
-    FileHeader database_head;
-    std::string_view database_name;
+        FileHeader database_head;
+        std::string_view database_name;
     };
 }
 

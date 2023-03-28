@@ -11,7 +11,7 @@ namespace mangodb
     struct FileHeader
     {
         char magic_string[16] = "mangodb";
-        PageSize page_size;
+        PageSize page_size = 512;
         uint64_t file_change_counter = 0;
         const uint8_t max_payload_fraction = 64;
         const uint8_t min_payload_fraction = 32;

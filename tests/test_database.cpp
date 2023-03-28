@@ -1,18 +1,32 @@
 #include <gtest/gtest.h>
+#include <stdio.h>
 #include "database.h"
 
 using namespace mangodb;
 
-TEST(DatabaseTest, DatabaseDoesNotExist)
+class DatabaseTest : public testing::Test
 {
-    auto mangodb = Database::open("/hello");
+public:
+    static inline std::string db_path = "test.mangodb";
 
-    EXPECT_EQ(mangodb, nullptr);
+protected:
+    static void SetUpTestSuite()
+    {
+        DatabaseConfiguration db_configuration("test");
+        Database::create(db_configuration);
+    }
+    static void TearDownTestSuite()
+    {
+        remove(db_path.data());
+    }
+};
+
+TEST_F(DatabaseTest, CreateDatabase)
+{
+    EXPECT_EQ(fs::exists(DatabaseTest::db_path), true);
 }
 
-TEST(DatabaseTest, CreateDatabase)
+TEST_F(DatabaseTest, DatabaseDoesNotExist)
 {
-    DatabaseConfiguration db_cfg(testing::TempDir() + "test");
-
-    EXPECT_EQ(Database::create(db_cfg.getDBFullPath()), 0);
+    EXPECT_THROW(Database::open("tests.mangodb"), std::runtime_error);
 }

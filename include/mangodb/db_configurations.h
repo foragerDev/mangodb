@@ -17,7 +17,7 @@ namespace mangodb
         std::string db_name;
         PageSize page_size = 512; // Default size of the Page is 512
     public:
-        DatabaseConfiguration(fs::path _db_path, PageSize _page_size = 512) : db_path(_db_path)
+        DatabaseConfiguration(fs::path _db_path, PageSize _page_size = 512) : db_path(_db_path.replace_extension("mangodb"))
         {
 
             if (_page_size < 512 && !is_power_of_two(_page_size))
@@ -34,9 +34,9 @@ namespace mangodb
             db_name = _db_path.filename().string();
         }
 
-        const fs::path &getDBFullPath()
+        std::string getDBFullPath() const
         {
-            return db_path.replace_extension("mangdb");
+            return db_path.string();
         }
         const std::string &getDBName() const
         {

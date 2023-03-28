@@ -8,7 +8,10 @@
         "string_view": "cpp",
         "functional": "cpp",
         "variant": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "filesystem": "cpp",
+        "chrono": "cpp",
+        "stdexcept": "cpp"
     },
     "cmake.sourceDirectory": "/root/mangodb"
 }

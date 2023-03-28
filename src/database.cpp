@@ -1,34 +1,41 @@
 #include "database.h"
 #include "mangodb.h"
 #include "header.h"
+#include "io_mgr.h"
 
 #include <filesystem>
 #include <fstream>
 #include <cstring>
+#include <iostream>
 
 namespace fs = std::filesystem;
-
 namespace mangodb
 {
     std::shared_ptr<MangoDB> Database::open(const fs::path &path)
     {
-        if (!fs::exists(path))
-            return nullptr;
+        auto io_manager = get_io_manager(path);
+
+        char *header_buffer[sizeof(FileHeader)];
+
+        if (io_manager->read(reinterpret_cast<char *>(header_buffer), 0, sizeof(FileHeader)) < 0)
+        {
+            throw std::runtime_error("Couldn't read the file.");
+        };
+        FileHeader *header = reinterpret_cast<FileHeader *>(header_buffer);
+        return nullptr;
     }
     int Database::create(const DatabaseConfiguration &db_cfg)
     {
-        std::ofstream database_file(db_cfg.getDBName(), database_file.binary);
+        auto io_manager = get_io_manager(db_cfg.getDBFullPath(), true);
 
-        if (!database_file.is_open())
-        {
-            return -1;
-        }
-        FileHeader file_header;
-        uint8_t file_header_buffer[sizeof(file_header)];
+        FileHeader file_header{};
         file_header.page_size = db_cfg.getPageSize();
-        std::memcpy(&file_header, &file_header, sizeof(file_header));
+        char *file_header_buffer = reinterpret_cast<char *>(&file_header);
 
-        database_file.write(reinterpret_cast<char *>(file_header_buffer), sizeof(file_header_buffer));
+        if (io_manager->write(file_header_buffer, 0, sizeof(file_header)) < 0)
+        {
+            throw std::runtime_error("Failed to write file header");
+        };
 
         return 0;
     }
